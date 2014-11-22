@@ -21,10 +21,10 @@
     <ClInclude Include="GameApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Agent.h">
+    <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="Missile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClCompile Include="GameApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Agent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Missile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

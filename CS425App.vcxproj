@@ -89,13 +89,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Agent.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="Grid.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="BaseApplication.cpp" />
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="Grid.cpp" />

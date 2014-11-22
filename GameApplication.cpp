@@ -7,13 +7,13 @@ namespace { //Anonymous namespace so that the grid is not a global variable, but
 
 //-------------------------------------------------------------------------------------
 GameApplication::GameApplication(void) {
-	agent = NULL; // Init member data
+	missile = NULL; // Init member data
 	grid = NULL;
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
-	if (agent != NULL)  // clean up memory
-		delete agent; 
+	if (missile != NULL)  // clean up memory
+		delete missile; 
 	if (grid != NULL) //Clean up grid
 		delete grid;
 }
@@ -24,7 +24,7 @@ void GameApplication::createScene(void) {
 	setupEnv();
 }
 //////////////////////////////////////////////////////////////////
-// Lecture 5: Returns a unique name for loaded objects and agents
+// Lecture 5: Returns a unique name for loaded objects and Missiles
 std::string getNewName() { // return a unique name 
 	static int count = 0;	// keep counting the number of objects
 
@@ -48,7 +48,7 @@ GameApplication::loadEnv() {
 			float y;
 			float scale;
 			float orient;
-			bool agent;
+			bool Missile;
 	};
 
 	ifstream inputfile;		// Holds a pointer into the file
@@ -93,14 +93,14 @@ GameApplication::loadEnv() {
 
 	// read in the objects
 	readEntity *rent = new readEntity();	// hold info for one object
-	std::map<string,readEntity*> objs;		// hold all object and agent types;
+	std::map<string,readEntity*> objs;		// hold all object and Missile types;
 	while (!inputfile.eof() && buf != "Characters") // read through until you find the Characters section
 	{ 
 		inputfile >> buf;			// read in the char
 		if (buf != "Characters")
 		{
 			inputfile >> rent->filename >> rent->y >> rent->orient >> rent->scale;  // read the rest of the line
-			rent->agent = false;		// these are objects
+			rent->Missile = false;		// these are objects
 			objs[buf] = rent;			// store this object in the map
 			rent = new readEntity();	// create a new instance to store the next object
 		}
@@ -116,8 +116,8 @@ GameApplication::loadEnv() {
 		if (buf != "World")
 		{
 			inputfile >> rent->filename >> rent->y >> rent->scale; // read the rest of the line
-			rent->agent = true;			// this is an agent
-			objs[buf] = rent;			// store the agent in the map
+			rent->Missile = true;			// this is an Missile
+			objs[buf] = rent;			// store the Missile in the map
 			rent = new readEntity();	// create a new instance to store the next object
 		}
 	}
@@ -130,14 +130,13 @@ GameApplication::loadEnv() {
 		{
 			inputfile >> c;			// read one char at a time
 			buf = c + '\0';			// convert char to string
-			rent = objs[buf];		// find cooresponding object or agent
-			if (rent != NULL)		// it might not be an agent or object
-				if (rent->agent)	// if it is an agent...
+			rent = objs[buf];		// find cooresponding object or Missile
+			if (rent != NULL)		// it might not be an Missile or object
+				if (rent->Missile)	// if it is an Missile...
 				{
 					// Use subclasses instead!
-					agent = new Agent(this->mSceneMgr, getNewName(), rent->filename, rent->y, rent->scale, grid);
-					agentList.push_back(agent);
-					agent->setPosition(grid->getPosition(i,j).x, rent->y, grid->getPosition(i,j).z);
+					missile = new Missile(this->mSceneMgr, getNewName(), rent->filename, rent->y, rent->scale, Ogre::Vector3(grid->getPosition(i,j).x, rent->y, grid->getPosition(i,j).z));
+					MissileList.push_back(missile);
 
 					// If we were using different characters, we'd have to deal with 
 					// different animation clips. 
@@ -146,7 +145,7 @@ GameApplication::loadEnv() {
 				{
 					grid->loadObject(getNewName(), rent->filename, i, rent->y, j, rent->scale);
 				}
-			else // not an object or agent
+			else // not an object or Missile
 			{
 				if (c == 'w') // create a wall
 				{
@@ -155,7 +154,7 @@ GameApplication::loadEnv() {
 					Ogre::SceneNode* mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 					mNode->attachObject(ent);
 					mNode->scale(0.1f,0.2f,0.1f); // cube is 100 x 100
-					grid->getNode(i,j)->setOccupied();  // indicate that agents can't pass through
+					grid->getNode(i,j)->setOccupied();  // indicate that Missiles can't pass through
 					mNode->setPosition(grid->getPosition(i,j).x, 10.0f, grid->getPosition(i,j).z);
 				}
 				else if (c == 'e')
@@ -212,9 +211,9 @@ GameApplication::setupEnv()
 void
 GameApplication::addTime(Ogre::Real deltaTime)
 {
-	// Lecture 5: Iterate over the list of agents
-	std::list<Agent*>::iterator iter;
-	for (iter = agentList.begin(); iter != agentList.end(); iter++)
+	// Lecture 5: Iterate over the list of Missiles
+	std::list<Missile*>::iterator iter;
+	for (iter = MissileList.begin(); iter != MissileList.end(); iter++)
 		if (*iter != NULL)
 			(*iter)->update(deltaTime);
 }
@@ -229,10 +228,6 @@ GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplic
         mTrayMgr->toggleAdvancedFrameStats();
     }
 	else if(arg.key == OIS::KC_SPACE) { //Pushes the position of a grid node onto the actor's walk list by using random nodes.
-		srand(time(NULL)); //Seed random generator
-		for(Agent*& actor : agentList) { //Randomly choose a grid destination to send to an agent.
-			actor->setGridDestination(grid->getNode(rand() % grid->getRow(), rand() % grid->getColumn()));
-		}
 	}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {

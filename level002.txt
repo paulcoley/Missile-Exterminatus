@@ -7,11 +7,11 @@ t tudorhouse.mesh 27.0 0.0 0.05
 h tudorhouse.mesh 27.0 90.0 0.05 
 b Barrel.mesh 3.5 0.0 1
 c column.mesh 11.0 0.0 0.1
-f fish.mesh 1.0 0.0 1
+f Barrel.mesh 1.0 0.0 1
 p WoodPallet.mesh 1.0 0.0 1
 
 Characters
-s sinbad.mesh 7.3 3
+s sinbad.mesh 1 1
 
 
 World

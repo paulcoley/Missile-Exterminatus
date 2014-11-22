@@ -1,15 +1,15 @@
 #pragma once 
 
 #include "BaseApplication.h"
-#include "Agent.h"
+#include "Missile.h"
 #include <fstream>
 #include <sstream>
 #include <map>
 
 class GameApplication : public BaseApplication {
 	private:
-		Agent* agent; // store a pointer to the character
-		std::list<Agent*> agentList; // Lecture 5: now a list of agents
+		Missile* missile; // store a pointer to the character
+		std::list<Missile*> MissileList; // Lecture 5: now a list of Missiles
 	public:
 		GameApplication(void);
 		virtual ~GameApplication(void);
