@@ -6,8 +6,8 @@ class PowerUp {
 private:
     
 public:
-    PowerUp();
-    ~PowerUp();
+	PowerUp();
+	~PowerUp();
     int timeActive;
     int speedModifier;
     int fire_speed_modifier;
