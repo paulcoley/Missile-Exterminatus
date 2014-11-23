@@ -2,6 +2,8 @@
 
 #include "BaseApplication.h"
 #include "Missile.h"
+#include "Player.h"
+#include "PowerUpAgent.h"
 #include <fstream>
 #include <sstream>
 #include <map>

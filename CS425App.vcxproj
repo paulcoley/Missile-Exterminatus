@@ -93,6 +93,9 @@
     <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="PowerUpAgent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Missile.cpp" />

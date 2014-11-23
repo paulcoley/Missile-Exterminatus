@@ -1,0 +1,38 @@
+#pragma once
+#include "Grid.h"
+#include <deque>
+#include "PowerUp.h"
+
+class Player {
+private:
+    
+    Ogre::SceneManager* mSceneMgr;      // pointer to scene graph
+    Ogre::SceneNode* mBodyNode;         
+    Ogre::Entity* mBodyEntity;
+    int timesHit;
+    bool dead;
+    std::list<PowerUp*> currentPowerUps;
+    int fire_speed;
+    
+    //Positioning and size data
+    float height;                       // height the character should be moved up
+    float scale;                        // scale of character from original model
+
+    // for locomotion
+    Ogre::Vector3 mDirection;               // The direction the object is moving
+    Ogre::Real speed;                       // The speed at which the object is moving
+    
+public:
+    Player(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
+    ~Player();
+    
+    void setPosition(Ogre::Vector3 new_position);
+    Ogre::Vector3 getPosition();
+	void setRotation(Ogre::Quaternion);
+	Ogre::Quaternion getRotation();
+    
+    
+    void update(Ogre::Real deltaTime);      // update the Player
+    void AddPowerUp(PowerUp*);
+};
+
