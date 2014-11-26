@@ -7,16 +7,20 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <lua.hpp>
 
 class GameApplication : public BaseApplication {
 	private:
 		Missile* missile; // store a pointer to the character
 		std::list<Missile*> MissileList; // Lecture 5: now a list of Missiles
+
 		//MissileSpawner Scaling
 		Ogre::Real timePassed;
 		int spawnThreshold;
 		int increaseThreshold;
 		int missilesPerSpawn;
+
+		lua_State* l;
 	public:
 		GameApplication(void);
 		virtual ~GameApplication(void);

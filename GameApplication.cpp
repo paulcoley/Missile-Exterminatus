@@ -9,11 +9,14 @@ namespace { //Anonymous namespace so that the grid is not a global variable, but
 GameApplication::GameApplication(void) {
 	missile = NULL; // Init member data
 	grid = NULL;
+
 	//MissileSpawner Scaling initialization
 	timePassed = 0.f;
 	spawnThreshold = 5;
 	increaseThreshold = 10;
 	missilesPerSpawn = 1;
+
+	l = luaL_newstate();
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -21,6 +24,8 @@ GameApplication::~GameApplication(void) {
 		delete missile; 
 	if (grid != NULL) //Clean up grid
 		delete grid;
+
+	lua_close(l);
 }
 
 //-------------------------------------------------------------------------------------
