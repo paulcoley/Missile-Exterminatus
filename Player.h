@@ -28,7 +28,7 @@ public:
     
     void setPosition(Ogre::Vector3 new_position);
     Ogre::Vector3 getPosition();
-	void setRotation(Ogre::Quaternion);
+	void setRotation(Ogre::Quaternion rotation);
 	Ogre::Quaternion getRotation();
     
     

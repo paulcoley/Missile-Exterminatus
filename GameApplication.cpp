@@ -9,6 +9,11 @@ namespace { //Anonymous namespace so that the grid is not a global variable, but
 GameApplication::GameApplication(void) {
 	missile = NULL; // Init member data
 	grid = NULL;
+	//MissileSpawner Scaling initialization
+	timePassed = 0.f;
+	spawnThreshold = 5;
+	increaseThreshold = 10;
+	missilesPerSpawn = 1;
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -212,10 +217,25 @@ void
 GameApplication::addTime(Ogre::Real deltaTime)
 {
 	// Lecture 5: Iterate over the list of Missiles
+	timePassed += deltaTime;
 	std::list<Missile*>::iterator iter;
 	for (iter = MissileList.begin(); iter != MissileList.end(); iter++)
 		if (*iter != NULL)
 			(*iter)->update(deltaTime);
+	//update scaling values
+	if(timePassed >= increaseThreshold)
+	{
+		increaseThreshold += 10;
+		missilesPerSpawn++;
+	}
+	if(timePassed >= spawnThreshold)
+	{
+		spawnThreshold += 5;
+		for(int i = 0; i < missilesPerSpawn; i++)
+		{
+			//spawn missiles
+		}
+	}
 }
 
 bool 
@@ -228,6 +248,14 @@ GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplic
         mTrayMgr->toggleAdvancedFrameStats();
     }
 	else if(arg.key == OIS::KC_SPACE) { //Pushes the position of a grid node onto the actor's walk list by using random nodes.
+	}
+	else if(arg.key == OIS::KC_W){ //move player forward
+	}
+	else if(arg.key == OIS::KC_S){ //move player backward
+	}
+	else if(arg.key == OIS::KC_A){ //strafe player left
+	}
+	else if(arg.key == OIS::KC_D){ //strafe player right
 	}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
