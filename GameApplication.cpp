@@ -254,14 +254,14 @@ GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplic
     }
 	else if(arg.key == OIS::KC_SPACE) { //Pushes the position of a grid node onto the actor's walk list by using random nodes.
 	}
-	else if(arg.key == OIS::KC_W){ //move player forward
-	}
-	else if(arg.key == OIS::KC_S){ //move player backward
-	}
-	else if(arg.key == OIS::KC_A){ //strafe player left
-	}
-	else if(arg.key == OIS::KC_D){ //strafe player right
-	}
+	//else if(arg.key == OIS::KC_W){ //move player forward
+	//}
+	//else if(arg.key == OIS::KC_S){ //move player backward
+	//}
+	//else if(arg.key == OIS::KC_A){ //strafe player left
+	//}
+	//else if(arg.key == OIS::KC_D){ //strafe player right
+	//}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
         if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)

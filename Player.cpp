@@ -47,9 +47,45 @@ Ogre::Quaternion Player::getRotation() {
 	return this->mBodyNode->getOrientation();
 }
     
-void Player::update(Ogre::Real deltaTime) {      // update the Player
+void Player::update(Ogre::Real deltaTime, OIS::Keyboard *input) {      // update the Player
+	for(PowerUp* power : this->currentPowerUps)
+	{
+		power->timeActive += deltaTime;
+		if(power->timeActive >= 10)
+		{
+			/*
+			check which type it is via checking its fields and undo modifications corresponding to type then pop from list
+			*/
+		}
+	}
+	if(input->isKeyDown(OIS::KC_W))
+	{
+		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, this->speed * deltaTime));
+	}
+	else if(input->isKeyDown(OIS::KC_S))
+	{
+		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, -(this->speed * deltaTime)));
+	}
+	else if(input->isKeyDown(OIS::KC_A))
+	{
+		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3((this->speed * deltaTime), 0, 0));
+	}
+	else if(input->isKeyDown(OIS::KC_D))
+	{
+		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(-(this->speed * deltaTime), 0, 0));
+	}
 }
 
 void Player::AddPowerUp(PowerUp* power) {
-	currentPowerUps.push_back(power);
+	this->currentPowerUps.push_back(power);
+}
+
+int Player::getTimesHit()
+{
+	return this->timesHit;
+}
+
+void Player::setTimesHit(int val)
+{
+	this->timesHit = val;
 }

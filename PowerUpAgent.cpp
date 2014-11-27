@@ -21,4 +21,11 @@ using namespace Ogre;
 }
 
 void PowerUpAgent::update() {
+	//bounding box check pending player instantiation
+	/*
+	if (this->mBodyEntity->getBoundingBox().intersects(playerBox))
+	{
+		player->addPowerUp(base);
+	}
+	*/
 }

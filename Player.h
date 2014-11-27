@@ -30,9 +30,10 @@ public:
     Ogre::Vector3 getPosition();
 	void setRotation(Ogre::Quaternion rotation);
 	Ogre::Quaternion getRotation();
-    
-    
-    void update(Ogre::Real deltaTime);      // update the Player
+    int getTimesHit();
+	void setTimesHit(int val);
+
+	void update(Ogre::Real deltaTime, OIS::Keyboard *input);      // update the Player
     void AddPowerUp(PowerUp*);
 };
 
