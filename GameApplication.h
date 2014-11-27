@@ -12,7 +12,7 @@
 class GameApplication : public BaseApplication {
 	private:
 		Missile* missile; // store a pointer to the character
-		std::list<Missile*> MissileList; // Lecture 5: now a list of Missiles
+		std::list<Missile*> MissileList; //List of all active missiles
 
 		//MissileSpawner Scaling
 		Ogre::Real timePassed;

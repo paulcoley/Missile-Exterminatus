@@ -12,7 +12,7 @@ private:
     int timesHit;
     bool dead;
     std::list<PowerUp*> currentPowerUps;
-    int fire_speed;
+    Ogre::Real fire_speed;
     
     //Positioning and size data
     float height;                       // height the character should be moved up
@@ -32,6 +32,9 @@ public:
 	Ogre::Quaternion getRotation();
     int getTimesHit();
 	void setTimesHit(int val);
+	void setHeight(float val);
+	void setSpeed(float val);
+	void setFireSpeed(float val);
 
 	void update(Ogre::Real deltaTime, OIS::Keyboard *input);      // update the Player
     void AddPowerUp(PowerUp*);

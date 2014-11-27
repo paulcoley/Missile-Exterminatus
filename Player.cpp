@@ -89,3 +89,16 @@ void Player::setTimesHit(int val)
 {
 	this->timesHit = val;
 }
+
+void Player::setHeight(float val) {
+	height = val;
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().y);
+}
+
+void Player::setSpeed(float val) {
+	speed = val;
+}
+
+void Player::setFireSpeed(float val) {
+	fire_speed = val;
+}

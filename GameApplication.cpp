@@ -2,13 +2,24 @@
 #include "Grid.h"
 
 namespace { //Anonymous namespace so that the grid is not a global variable, but restricted to the scope of this file.
+	Player* player;
 	Grid* grid;
+
+	int setupPlayer(lua_State* L) {
+		int argc = lua_gettop(L);
+		if(argc == 0 || player == NULL) { return 0; }
+		player->setSpeed(lua_tonumber(L, 1));
+		player->setFireSpeed(lua_tonumber(L, 2));
+		player->setHeight(lua_tonumber(L, 3));
+		return 3;
+	}
 }
 
 //-------------------------------------------------------------------------------------
 GameApplication::GameApplication(void) {
 	missile = NULL; // Init member data
 	grid = NULL;
+	player = NULL;
 
 	//MissileSpawner Scaling initialization
 	timePassed = 0.f;
@@ -17,6 +28,8 @@ GameApplication::GameApplication(void) {
 	missilesPerSpawn = 1;
 
 	l = luaL_newstate();
+	luaL_openlibs(l);
+	lua_register(l, "setupPlayer", setupPlayer);
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -33,8 +46,7 @@ void GameApplication::createScene(void) {
     loadEnv();
 	setupEnv();
 }
-//////////////////////////////////////////////////////////////////
-// Lecture 5: Returns a unique name for loaded objects and Missiles
+
 std::string getNewName() { // return a unique name 
 	static int count = 0;	// keep counting the number of objects
 
@@ -46,9 +58,7 @@ std::string getNewName() { // return a unique name
 	return "object_" + s;	// append the current count onto the string
 }
 
-// Lecture 5: Load level from file!
-void // Load the buildings or ground plane, etc
-GameApplication::loadEnv() {
+void GameApplication::loadEnv() {
 	using namespace Ogre;	// use both namespaces
 	using namespace std;
 
@@ -65,7 +75,7 @@ GameApplication::loadEnv() {
 
 	string path = __FILE__; //gets the current cpp file's path with the cpp file
 	path = path.substr(0,1+path.find_last_of('\\')); //removes filename to leave path
-	path+= "level002.txt"; //if txt file is in the same directory as cpp file
+	path+= "main_level.txt"; //if txt file is in the same directory as cpp file
 	inputfile.open(path);
 
 	//inputfile.open("D:/CS425-2012/Lecture 8/GameEngine-loadLevel/level001.txt"); // bad explicit path!!!
@@ -147,9 +157,6 @@ GameApplication::loadEnv() {
 					// Use subclasses instead!
 					missile = new Missile(this->mSceneMgr, getNewName(), rent->filename, rent->y, rent->scale, Ogre::Vector3(grid->getPosition(i,j).x, rent->y, grid->getPosition(i,j).z));
 					MissileList.push_back(missile);
-
-					// If we were using different characters, we'd have to deal with 
-					// different animation clips. 
 				}
 				else	// Load objects
 				{
@@ -175,6 +182,13 @@ GameApplication::loadEnv() {
 					mNode->attachObject(ps);
 					mNode->setPosition(grid->getPosition(i,j).x, 0.0f, grid->getPosition(i,j).z);
 				}
+				else if (c == 'p') {
+					player = new Player(this->mSceneMgr, getNewName(), "sinbad.mesh", 0, 1, Ogre::Vector3(grid->getPosition(i,j).x, 1, grid->getPosition(i,j).z));
+					path = __FILE__; //gets the current cpp file's path with the cpp file
+					path = path.substr(0,1+path.find_last_of('\\')); //removes filename to leave path
+					path+= "scripts\\player.lua"; //if txt file is in the same directory as cpp file
+					luaL_dofile(l, path.c_str());
+				}
 			}
 		}
 	
@@ -192,8 +206,7 @@ GameApplication::loadEnv() {
 	grid->printToFile(); // see what the initial grid looks like.
 }
 
-void // Set up lights, shadows, etc
-GameApplication::setupEnv()
+void GameApplication::setupEnv()
 {
 	using namespace Ogre;
 
@@ -218,33 +231,30 @@ GameApplication::setupEnv()
 	//mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8); // Lecture 4
 }
 
-void
-GameApplication::addTime(Ogre::Real deltaTime)
+void GameApplication::addTime(Ogre::Real deltaTime)
 {
-	// Lecture 5: Iterate over the list of Missiles
 	timePassed += deltaTime;
-	std::list<Missile*>::iterator iter;
-	for (iter = MissileList.begin(); iter != MissileList.end(); iter++)
-		if (*iter != NULL)
-			(*iter)->update(deltaTime);
+
+	for(Missile*& projectile : MissileList) {
+		if (projectile != NULL) {
+			projectile->update(deltaTime);
+		}
+	}
+
 	//update scaling values
-	if(timePassed >= increaseThreshold)
-	{
+	if(timePassed >= increaseThreshold) {
 		increaseThreshold += 10;
 		missilesPerSpawn++;
 	}
-	if(timePassed >= spawnThreshold)
-	{
+	if(timePassed >= spawnThreshold) {
 		spawnThreshold += 5;
-		for(int i = 0; i < missilesPerSpawn; i++)
-		{
+		for(int i = 0; i < missilesPerSpawn; i++) {
 			//spawn missiles
 		}
 	}
 }
 
-bool 
-GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
+bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
 {
     if (mTrayMgr->isDialogVisible()) return true;   // don't process any more keys if dialog is up
 
