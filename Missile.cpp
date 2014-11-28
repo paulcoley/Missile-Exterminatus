@@ -47,19 +47,8 @@ void Missile::update(Ogre::Real deltaTime)
 	this->updateAnimations(deltaTime);	// Update animation playback
 	
 
-	Ogre::Real move = speed * deltaTime;
-	mDistance -= move;
-	// Rotation Code
-	Ogre::Vector3 src = mBodyNode[0]->getOrientation() * Ogre::Vector3::UNIT_Z;
-	if ((1.0f + src.dotProduct(mDirection)) < 0.0001f) 
-	{
-		mBodyNode[0]->yaw(Ogre::Degree(180));
-	}
-	else
-	{
-		Ogre::Quaternion quat = src.getRotationTo(mDirection);
-		mBodyNode[0]->rotate(quat);
-	}
+	//Ogre::Real move = speed * deltaTime;
+	//mDistance -= move;
 
 
 	//bounding box check pending player instantiation
@@ -212,6 +201,5 @@ void Missile::setTracking(Ogre::SceneNode* target)
 	mDestination = target->getPosition();
 	mDirection = mDestination - mBodyNode[0]->getPosition();
 	mDistance = mDirection.normalise();
-	//this->mBodyNode[0]->setAutoTracking(true, target);
-	//this->mBodyNode[1]->setAutoTracking(true, mSceneMgr->getSceneNode("Player"), Ogre::Vector3(0,0,1), Ogre::Vector3(0,4,0));
+	mBodyNode[0]->setAutoTracking(true, target, Ogre::Vector3::NEGATIVE_UNIT_X);
 }
