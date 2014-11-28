@@ -191,6 +191,7 @@ void GameApplication::loadEnv() {
 				}
 			}
 		}
+	
 	// delete all of the readEntities in the objs map
 	rent = objs["s"]; // just so we can see what is going on in memory (delete this later)
 	
@@ -233,9 +234,9 @@ void GameApplication::setupEnv()
 void GameApplication::addTime(Ogre::Real deltaTime)
 {
 	timePassed += deltaTime;
-
 	for(Missile*& projectile : MissileList) {
 		if (projectile != NULL) {
+			projectile->setTracking(player->getSceneNode());
 			projectile->update(deltaTime);
 		}
 	}

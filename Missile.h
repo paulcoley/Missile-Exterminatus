@@ -49,6 +49,7 @@ public:
     
     void setPosition(Ogre::Vector3 new_position);
     Ogre::Vector3 getPosition();
+	void setTracking(Ogre::SceneNode* target);
     void update(Ogre::Real deltaTime);      // update the Missile
 
 };

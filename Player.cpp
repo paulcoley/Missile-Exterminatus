@@ -104,3 +104,8 @@ void Player::strafeLeft(Ogre::Real deltaTime) {
 void Player::strafeRight(Ogre::Real deltaTime) {
 	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_X * -speed * deltaTime);
 }
+
+Ogre::SceneNode* Player::getSceneNode()
+{
+	return this->mBodyNode;
+}

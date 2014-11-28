@@ -39,6 +39,7 @@ public:
 	void moveBackward(Ogre::Real deltaTime);
 	void strafeLeft(Ogre::Real deltaTime);
 	void strafeRight(Ogre::Real deltaTime);
+	Ogre::SceneNode* getSceneNode();
 
 	void update(Ogre::Real deltaTime);      // update the Player
     void AddPowerUp(PowerUp*);
