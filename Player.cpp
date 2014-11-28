@@ -41,13 +41,14 @@ Ogre::Vector3 Player::getPosition() {
 
 void Player::setRotation(Ogre::Quaternion rotation) {
 	this->mBodyNode->setOrientation(rotation);
+	this->mBodyNode->yaw(Ogre::Degree(180));
 }
 
 Ogre::Quaternion Player::getRotation() {
 	return this->mBodyNode->getOrientation();
 }
     
-void Player::update(Ogre::Real deltaTime, OIS::Keyboard *input) {      // update the Player
+void Player::update(Ogre::Real deltaTime) {      // update the Player
 	for(PowerUp* power : this->currentPowerUps)
 	{
 		power->timeActive += deltaTime;
@@ -57,22 +58,6 @@ void Player::update(Ogre::Real deltaTime, OIS::Keyboard *input) {      // update
 			check which type it is via checking its fields and undo modifications corresponding to type then pop from list
 			*/
 		}
-	}
-	if(input->isKeyDown(OIS::KC_W))
-	{
-		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, this->speed * deltaTime));
-	}
-	else if(input->isKeyDown(OIS::KC_S))
-	{
-		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, -(this->speed * deltaTime)));
-	}
-	else if(input->isKeyDown(OIS::KC_A))
-	{
-		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3((this->speed * deltaTime), 0, 0));
-	}
-	else if(input->isKeyDown(OIS::KC_D))
-	{
-		this->mBodyNode->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(-(this->speed * deltaTime), 0, 0));
 	}
 }
 
@@ -92,7 +77,7 @@ void Player::setTimesHit(int val)
 
 void Player::setHeight(float val) {
 	height = val;
-	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().y);
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().z);
 }
 
 void Player::setSpeed(float val) {
@@ -101,4 +86,20 @@ void Player::setSpeed(float val) {
 
 void Player::setFireSpeed(float val) {
 	fire_speed = val;
+}
+
+void Player::moveForward(Ogre::Real deltaTime) {
+	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_Z * speed * deltaTime);
+}
+
+void Player::moveBackward(Ogre::Real deltaTime) {
+	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_Z * -speed * deltaTime);
+}
+
+void Player::strafeLeft(Ogre::Real deltaTime) {
+	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_X * speed * deltaTime);
+}
+
+void Player::strafeRight(Ogre::Real deltaTime) {
+	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_X * -speed * deltaTime);
 }

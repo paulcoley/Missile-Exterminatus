@@ -252,6 +252,22 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			//spawn missiles
 		}
 	}
+
+	if (mKeyboard->isKeyDown(OIS::KC_W)) {
+		player->moveForward(deltaTime);
+	}
+	if (mKeyboard->isKeyDown(OIS::KC_A)) {
+		player->strafeLeft(deltaTime);
+	}
+	if (mKeyboard->isKeyDown(OIS::KC_S)) {
+		player->moveBackward(deltaTime);
+	}
+	if (mKeyboard->isKeyDown(OIS::KC_D)) {
+		player->strafeRight(deltaTime);
+	}
+
+	player->setRotation(mCamera->getOrientation());
+	mCamera->setPosition(player->getPosition());
 }
 
 bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
@@ -264,14 +280,6 @@ bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseA
     }
 	else if(arg.key == OIS::KC_SPACE) { //Pushes the position of a grid node onto the actor's walk list by using random nodes.
 	}
-	//else if(arg.key == OIS::KC_W){ //move player forward
-	//}
-	//else if(arg.key == OIS::KC_S){ //move player backward
-	//}
-	//else if(arg.key == OIS::KC_A){ //strafe player left
-	//}
-	//else if(arg.key == OIS::KC_D){ //strafe player right
-	//}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {
         if (mDetailsPanel->getTrayLocation() == OgreBites::TL_NONE)

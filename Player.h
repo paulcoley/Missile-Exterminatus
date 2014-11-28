@@ -35,8 +35,12 @@ public:
 	void setHeight(float val);
 	void setSpeed(float val);
 	void setFireSpeed(float val);
+	void moveForward(Ogre::Real deltaTime);
+	void moveBackward(Ogre::Real deltaTime);
+	void strafeLeft(Ogre::Real deltaTime);
+	void strafeRight(Ogre::Real deltaTime);
 
-	void update(Ogre::Real deltaTime, OIS::Keyboard *input);      // update the Player
+	void update(Ogre::Real deltaTime);      // update the Player
     void AddPowerUp(PowerUp*);
 };
 
