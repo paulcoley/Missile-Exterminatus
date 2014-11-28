@@ -24,7 +24,8 @@ Player::Player(Ogre::SceneManager* SceneManager, std::string name, std::string f
 	timesHit = 0;
 	dead = false;
 	fire_speed = 35.0f;
-	speed = 35.0f;	
+	speed = 35.0f;
+	baseSpeed = speed;
 	mDirection = Ogre::Vector3::ZERO;
 }
 

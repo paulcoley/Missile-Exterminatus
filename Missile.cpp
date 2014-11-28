@@ -24,8 +24,8 @@ Missile::Missile(Ogre::SceneManager* SceneManager, std::string name, std::string
 
 	// configure walking parameters
 	speed = 35.0f;	
+	this->baseSpeed = speed;
 	mDirection = Ogre::Vector3::ZERO;
-
 	//this->mBodyNode[0]->setAutoTracking(true, mSceneMgr->getSceneNode("Player"), Ogre::Vector3(0,0,1), Ogre::Vector3(0,4,0));
 	//this->mBodyNode[1]->setAutoTracking(true, mSceneMgr->getSceneNode("Player"), Ogre::Vector3(0,0,1), Ogre::Vector3(0,4,0));
 }
@@ -47,7 +47,7 @@ void Missile::update(Ogre::Real deltaTime)
 	this->updateAnimations(deltaTime);	// Update animation playback
 	//bounding box check pending player instantiation
 	/*
-	if (this->mBodyEntity[0]->getBoundingBox().intersects(playerBox))
+	if (this->mBodyEntity[0]->getBoundingBox().intersects(playerBox) || this->mBodyEntity[1]->getBoundingBox().intersects(playerBox))
 	{
 		if(!(this->fishOn))
 		{
@@ -57,16 +57,16 @@ void Missile::update(Ogre::Real deltaTime)
 	}
 	if(this->fishOn)
 	{
-		this->mBodyNode[0]->setVisible(false);
+		this->mBodyNode[1]->setVisible(false);
 		this->mBodyNode[0]->setVisible(true);
 	}
 	else
 	{
-		this->mBodyNode[0]->setVisible(true);
+		this->mBodyNode[1]->setVisible(true);
 		this->mBodyNode[0]->setVisible(false);
 	}
-	this->mBodyNode[0]->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, this->speed * deltaTime));
-	this->mBodyNode[1]->translate(this->mBodyNode->getOrientation() * Ogre::Vector3(0, 0, this->speed * deltaTime));
+	this->mBodyNode[0]->translate(this->mBodyNode[0]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
+	this->mBodyNode[1]->translate(this->mBodyNode[1]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
 	*/
 }
 

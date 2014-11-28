@@ -40,7 +40,7 @@ private:
     Ogre::Vector3 mDirection;               // The direction the object is moving
     Ogre::Vector3 mDestination;             // The destination the object is moving towards
     Ogre::Real speed;                       // The speed at which the object is moving
-    
+	Ogre::Real baseSpeed;
     //Update methods/checks
     void explode();
 public:

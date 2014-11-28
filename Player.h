@@ -21,7 +21,7 @@ private:
     // for locomotion
     Ogre::Vector3 mDirection;               // The direction the object is moving
     Ogre::Real speed;                       // The speed at which the object is moving
-    
+    Ogre::Real baseSpeed;
 public:
     Player(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
     ~Player();
