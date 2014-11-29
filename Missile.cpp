@@ -71,9 +71,10 @@ void Missile::update(Ogre::Real deltaTime)
 		this->mBodyNode[1]->setVisible(true);
 		this->mBodyNode[0]->setVisible(false);
 	}
-	this->mBodyNode[0]->translate(this->mBodyNode[0]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
-	this->mBodyNode[1]->translate(this->mBodyNode[1]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
 	*/
+	this->mBodyNode[0]->translate(this->mBodyNode[0]->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_X * this->speed * deltaTime);
+	//this->mBodyNode[1]->translate(this->mBodyNode[1]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
+	
 }
 
 
