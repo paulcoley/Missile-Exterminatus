@@ -1,6 +1,6 @@
 #include "Missile.h"
 
-Missile::Missile(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position) {
+Missile::Missile(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position, GameApplication* instance) {
 	using namespace Ogre;
 
 	mSceneMgr = SceneManager; // keep a pointer to where this Missile will be
@@ -26,8 +26,7 @@ Missile::Missile(Ogre::SceneManager* SceneManager, std::string name, std::string
 	speed = 35.0f;	
 	this->baseSpeed = speed;
 	mDirection = Ogre::Vector3::ZERO;
-	//this->mBodyNode[0]->setAutoTracking(true, mSceneMgr->getSceneNode("Player"), Ogre::Vector3(0,0,1), Ogre::Vector3(0,4,0));
-	//this->mBodyNode[1]->setAutoTracking(true, mSceneMgr->getSceneNode("Player"), Ogre::Vector3(0,0,1), Ogre::Vector3(0,4,0));
+	owner = instance;
 }
 
 Missile::~Missile(){
@@ -35,48 +34,61 @@ Missile::~Missile(){
 	// mSceneMgr->destroyEntity(mBodyEntity);
 }
 
-void Missile::setPosition(Ogre::Vector3 spawn_position)
-{
-	this->mBodyNode[0]->setPosition(spawn_position);
+void Missile::setPosition(Ogre::Vector3 spawn_position) {
+	mBodyNode[0]->setPosition(spawn_position);
 }
 
-// update is called at every frame from GameApplication::addTime
-void Missile::update(Ogre::Real deltaTime) 
-{
-	
-	this->updateAnimations(deltaTime);	// Update animation playback
-	
+Ogre::Vector3 Missile::getPosition() {
+	return mBodyNode[0]->getPosition();
+}
 
-	//Ogre::Real move = speed * deltaTime;
-	//mDistance -= move;
+void Missile::update(Ogre::Real deltaTime)  {
+	this->updateAnimations(deltaTime);
+
+	auto missileList = owner->getMissiles();
+
+	if (mDistance <= 15.f) {
+		mBodyNode[0]->translate(mBodyNode[0]->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_X * this->speed * deltaTime);
+	}
+	else {
+		Ogre::Vector3 alignment = Ogre::Vector3::ZERO;
+		Ogre::Vector3 cohesion = Ogre::Vector3::ZERO;
+		Ogre::Vector3 seperation = Ogre::Vector3::ZERO;
+
+		for(Missile*& actor : missileList) {
+			if (actor == this) { continue; }				//Skip agent in list if itself
+			Ogre::Vector3 distance_base = mBodyNode[0]->getPosition() - actor->getPosition();	//Get distance vector to each other agent
+			Ogre::Real distance_normal = distance_base.length();										//Get length of each distance
 
 
-	//bounding box check pending player instantiation
-	/*
-	if (this->mBodyEntity[0]->getBoundingBox().intersects(playerBox) || this->mBodyEntity[1]->getBoundingBox().intersects(playerBox))
-	{
-		if(!(this->fishOn))
-		{
-			player->setTimesHit(player->getTimesHit() + 1);
+			if(distance_normal < (20.f)) {
+				alignment += actor->mDirection; //If within 20u, add and average directions of other agents
+			}
+
+			if(distance_normal < (15.f)) {
+				cohesion += actor->getPosition(); //If within 15u, attempt to steer toward center of mass in neighborhood
+			}
+
+			if(distance_normal < (10.f)) { // If within 10u, attempt to most away from other agents.
+				seperation += distance_base / (distance_normal * distance_normal);
+			}
 		}
-		this->explode();
-	}
-	if(this->fishOn)
-	{
-		this->mBodyNode[1]->setVisible(false);
-		this->mBodyNode[0]->setVisible(true);
-	}
-	else
-	{
-		this->mBodyNode[1]->setVisible(true);
-		this->mBodyNode[0]->setVisible(false);
-	}
-	*/
-	this->mBodyNode[0]->translate(this->mBodyNode[0]->getOrientation() * Ogre::Vector3::NEGATIVE_UNIT_X * this->speed * deltaTime);
-	//this->mBodyNode[1]->translate(this->mBodyNode[1]->getOrientation() * Ogre::Vector3::UNIT_Z * this->speed * deltaTime);
-	
-}
+		if(missileList.size() > 1) { //Average out value and adjust cohesion position
+			alignment /= (missileList.size() - 1);
+			cohesion /= (missileList.size() - 1);
+			cohesion -= mBodyNode[0]->getPosition();
+		}
+		alignment.normalise(); //Normalize all values for creating the new direction vector.
+		cohesion.normalise();
+		seperation.normalise();
+		Ogre::Vector3 destination = (mDestination - mBodyNode[0]->getPosition()).normalisedCopy();
 
+		mDirection = 10.f*destination + 80.f*alignment + 5.f*cohesion + 5.f*seperation;
+		mDirection.normalise();
+
+		mBodyNode[0]->translate(mDirection * speed * deltaTime);
+	}
+}
 
 void Missile::setupAnimations()
 {
@@ -203,4 +215,8 @@ void Missile::setTracking(Ogre::SceneNode* target)
 	mDirection = mDestination - mBodyNode[0]->getPosition();
 	mDistance = mDirection.normalise();
 	mBodyNode[0]->setAutoTracking(true, target, Ogre::Vector3::NEGATIVE_UNIT_X);
+}
+
+void Missile::setSpeed(float value) {
+	speed = value;
 }

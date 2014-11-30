@@ -9,9 +9,10 @@
 #include <map>
 #include <lua.hpp>
 
+class Missile;
+
 class GameApplication : public BaseApplication {
 	private:
-		Missile* missile; // store a pointer to the character
 		std::list<Missile*> MissileList; //List of all active missiles
 
 		//MissileSpawner Scaling
@@ -31,8 +32,6 @@ class GameApplication : public BaseApplication {
 		void addTime(Ogre::Real deltaTime);		// update the game state
 
 		//////////////////////////////////////////////////////////////////////////
-		// Lecture 4: keyboard interaction
-		// moved from base application
 		// OIS::KeyListener
 		bool keyPressed( const OIS::KeyEvent &arg );
 		bool keyReleased( const OIS::KeyEvent &arg );
@@ -41,6 +40,8 @@ class GameApplication : public BaseApplication {
 		bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
 		bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
 		////////////////////////////////////////////////////////////////////////////
+
+		std::list<Missile*> getMissiles();
 
 	protected:
 		virtual void createScene(void);

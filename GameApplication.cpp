@@ -1,9 +1,10 @@
 #include "GameApplication.h"
 #include "Grid.h"
 
-namespace { //Anonymous namespace so that the grid is not a global variable, but restricted to the scope of this file.
+namespace {
 	Player* player;
 	Grid* grid;
+	Missile* missile;
 
 	int setupPlayer(lua_State* L) {
 		int argc = lua_gettop(L);
@@ -155,7 +156,7 @@ void GameApplication::loadEnv() {
 				if (rent->Missile)	// if it is an Missile...
 				{
 					// Use subclasses instead!
-					missile = new Missile(this->mSceneMgr, getNewName(), rent->filename, rent->y, rent->scale, Ogre::Vector3(grid->getPosition(i,j).x, rent->y, grid->getPosition(i,j).z));
+					missile = new Missile(this->mSceneMgr, getNewName(), rent->filename, rent->y, rent->scale, Ogre::Vector3(grid->getPosition(i,j).x, rent->y, grid->getPosition(i,j).z), this);
 					MissileList.push_back(missile);
 				}
 				else	// Load objects
@@ -391,4 +392,8 @@ bool GameApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButto
     if (mTrayMgr->injectMouseUp(arg, id)) return true;
     mCameraMan->injectMouseUp(arg, id);
     return true;
+}
+
+std::list<Missile*> GameApplication::getMissiles() {
+	return MissileList;
 }

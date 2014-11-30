@@ -1,6 +1,9 @@
 #pragma once
 #include "Grid.h"
+#include "GameApplication.h"
 #include <deque>
+
+class GameApplication;
 
 class Missile {
 private:
@@ -8,6 +11,7 @@ private:
     Ogre::SceneManager* mSceneMgr;      // pointer to scene graph
     Ogre::SceneNode* mBodyNode[2];         
     Ogre::Entity* mBodyEntity[2];
+	GameApplication* owner;
     
     //Animation block
     enum AnimID
@@ -44,7 +48,7 @@ private:
     //Update methods/checks
     void explode();
 public:
-    Missile(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
+	Missile(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position, GameApplication* instance);
     ~Missile();
     
     void setPosition(Ogre::Vector3 new_position);
@@ -52,4 +56,5 @@ public:
 	void setTracking(Ogre::SceneNode* target);
     void update(Ogre::Real deltaTime);      // update the Missile
 
+	void setSpeed(float value);
 };

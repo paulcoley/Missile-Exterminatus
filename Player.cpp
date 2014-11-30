@@ -91,18 +91,22 @@ void Player::setFireSpeed(float val) {
 
 void Player::moveForward(Ogre::Real deltaTime) {
 	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_Z * speed * deltaTime);
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().z);
 }
 
 void Player::moveBackward(Ogre::Real deltaTime) {
 	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_Z * -speed * deltaTime);
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().z);
 }
 
 void Player::strafeLeft(Ogre::Real deltaTime) {
 	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_X * speed * deltaTime);
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().z);
 }
 
 void Player::strafeRight(Ogre::Real deltaTime) {
 	mBodyNode->translate(mBodyNode->getOrientation() * Ogre::Vector3::UNIT_X * -speed * deltaTime);
+	mBodyNode->setPosition(mBodyNode->getPosition().x, height, mBodyNode->getPosition().z);
 }
 
 Ogre::SceneNode* Player::getSceneNode()
