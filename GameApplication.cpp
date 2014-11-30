@@ -268,7 +268,14 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 	}
 
 	player->setRotation(mCamera->getOrientation());
-	mCamera->setPosition(player->getPosition());
+	Ogre::Vector3 camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -15.f + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
+	Ogre::Ray ray(player->getPosition(), camPos);
+	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0.f);
+	auto values = ray.intersects(plane);
+	if(values.first == true) {
+		camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -values.second + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
+	}
+	mCamera->setPosition(camPos);
 }
 
 bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
