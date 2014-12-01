@@ -50,10 +50,10 @@ Ogre::Quaternion Player::getRotation() {
 }
     
 void Player::update(Ogre::Real deltaTime) {      // update the Player
-	for(PowerUp* power : this->currentPowerUps)
+	for(PowerUp power : this->currentPowerUps)
 	{
-		power->timeActive += deltaTime;
-		if(power->timeActive >= 10)
+		power.timeActive += deltaTime;
+		if(power.timeActive >= 10)
 		{
 			/*
 			check which type it is via checking its fields and undo modifications corresponding to type then pop from list
@@ -62,7 +62,7 @@ void Player::update(Ogre::Real deltaTime) {      // update the Player
 	}
 }
 
-void Player::AddPowerUp(PowerUp* power) {
+void Player::AddPowerUp(PowerUp power) {
 	this->currentPowerUps.push_back(power);
 }
 
@@ -116,5 +116,5 @@ Ogre::SceneNode* Player::getSceneNode()
 
 Ogre::AxisAlignedBox Player::getBoundBox()
 {
-	return this->mBodyEntity->getBoundingBox();
+	return this->mBodyEntity->getWorldBoundingBox();
 }

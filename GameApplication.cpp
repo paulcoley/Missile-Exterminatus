@@ -44,6 +44,7 @@ GameApplication::GameApplication(void) {
 	luaL_openlibs(l);
 	lua_register(l, "setupPlayer", setupPlayer);
 	lua_register(l, "setPowerUps", setPowerUps);
+	srand(NULL);
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -227,8 +228,6 @@ void GameApplication::loadEnv() {
 	luaL_dofile(l, path.c_str());
 
 	powerSphere = new PowerUpAgent(player, this, mSceneMgr, "PowerSphere", "sphere.mesh", 5.f, 0.1f, Ogre::Vector3::ZERO);
-	srand(NULL);
-	powerSphere->spawn(powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
 }
 
 void GameApplication::setupEnv()
@@ -267,12 +266,10 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 	}
 
 	//bounding box checks
-	/*
-	if(player->getBoundBox().intersects(powerSphere->getBoundBox()))
-	{
+	if(player->getBoundBox().intersects(powerSphere->getBoundBox()) && powerSphere->getVisibility() == true) {
 		player->AddPowerUp(powerSphere->getBase());
+		powerSphere->despawn();
 	}
-	*/
 	for(Missile*& projectile : MissileList) {
 		if(projectile->getBoundBox().intersects(player->getBoundBox()))
 		{
@@ -285,7 +282,6 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 	if(timePassed >= increaseThreshold) {
 		increaseThreshold += 10;
 		missilesPerSpawn++;
-		srand(NULL);
 		if(powerSphere->getVisibility() == false) {
 			powerSphere->spawn( powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
 		}

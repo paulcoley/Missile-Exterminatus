@@ -11,7 +11,7 @@ private:
     Ogre::Entity* mBodyEntity;
     int timesHit;
     bool dead;
-    std::list<PowerUp*> currentPowerUps;
+    std::list<PowerUp> currentPowerUps;
     Ogre::Real fire_speed;
     
     //Positioning and size data
@@ -43,6 +43,6 @@ public:
 	Ogre::AxisAlignedBox getBoundBox();
 
 	void update(Ogre::Real deltaTime);      // update the Player
-    void AddPowerUp(PowerUp*);
+    void AddPowerUp(PowerUp);
 };
 
