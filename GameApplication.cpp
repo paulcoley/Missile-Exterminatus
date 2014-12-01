@@ -81,6 +81,7 @@ void GameApplication::createGUI(void)
 	//mTrayMgr->create
 
 	mTrayMgr->showAll();
+	mTrayMgr->hideCursor();
 
 	//////////////////////////////////////////////////////////////////////////////////
 }
