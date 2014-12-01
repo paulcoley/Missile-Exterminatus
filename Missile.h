@@ -46,15 +46,15 @@ private:
     Ogre::Real speed;                       // The speed at which the object is moving
 	Ogre::Real baseSpeed;
     //Update methods/checks
-    void explode();
+    
 public:
 	Missile(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position, GameApplication* instance);
     ~Missile();
-    
+    void explode();
     void setPosition(Ogre::Vector3 new_position);
     Ogre::Vector3 getPosition();
 	void setTracking(Ogre::SceneNode* target);
     void update(Ogre::Real deltaTime);      // update the Missile
-
+	Ogre::AxisAlignedBox getBoundBox();
 	void setSpeed(float value);
 };

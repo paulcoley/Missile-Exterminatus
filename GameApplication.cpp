@@ -243,6 +243,22 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			projectile->update(deltaTime);
 		}
 	}
+
+	//bounding box checks
+	/*
+	if(player->getBoundBox().intersects(powerSphere->getBoundBox()))
+	{
+		player->AddPowerUp(powerSphere->getBase());
+	}
+	*/
+	for(Missile*& projectile : MissileList) {
+		if(projectile->getBoundBox().intersects(player->getBoundBox()))
+		{
+			player->setTimesHit(player->getTimesHit() + 1);
+			//projectile->explode();
+		}
+	}
+
 	//update scaling values
 	if(timePassed >= increaseThreshold) {
 		increaseThreshold += 10;

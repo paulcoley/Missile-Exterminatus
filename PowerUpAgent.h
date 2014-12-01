@@ -20,5 +20,6 @@ public:
 	void despawn();
 	bool getVisibility();
 	PowerUp* getBase();
+	Ogre::AxisAlignedBox getBoundBox();
 	void update();
 };

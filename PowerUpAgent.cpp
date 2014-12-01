@@ -62,6 +62,10 @@ PowerUp* PowerUpAgent::getBase()
 {
 	return base;
 }
+Ogre::AxisAlignedBox PowerUpAgent::getBoundBox()
+{
+	return this->mBodyEntity->getBoundingBox();
+}
 void PowerUpAgent::update() {
 	//bounding box check pending player instantiation
 	/*

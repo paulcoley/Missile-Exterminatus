@@ -113,3 +113,8 @@ Ogre::SceneNode* Player::getSceneNode()
 {
 	return this->mBodyNode;
 }
+
+Ogre::AxisAlignedBox Player::getBoundBox()
+{
+	return this->mBodyEntity->getBoundingBox();
+}

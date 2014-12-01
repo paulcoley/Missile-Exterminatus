@@ -40,6 +40,7 @@ public:
 	void strafeLeft(Ogre::Real deltaTime);
 	void strafeRight(Ogre::Real deltaTime);
 	Ogre::SceneNode* getSceneNode();
+	Ogre::AxisAlignedBox getBoundBox();
 
 	void update(Ogre::Real deltaTime);      // update the Player
     void AddPowerUp(PowerUp*);

@@ -220,3 +220,14 @@ void Missile::setTracking(Ogre::SceneNode* target)
 void Missile::setSpeed(float value) {
 	speed = value;
 }
+
+Ogre::AxisAlignedBox Missile::getBoundBox()
+{
+	/*
+	if(fishOn)
+	{
+		return this->mBodyEntity[1]->getBoundingBox();
+	}
+	*/
+	return this->mBodyEntity[0]->getBoundingBox();
+}
