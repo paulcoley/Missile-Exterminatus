@@ -8,6 +8,7 @@
 #include <sstream>
 #include <map>
 #include <lua.hpp>
+#include <vector>
 
 class Missile;
 

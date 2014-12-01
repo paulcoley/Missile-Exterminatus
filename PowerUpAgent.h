@@ -11,15 +11,15 @@ private:
     Ogre::SceneNode* mBodyNode;         
     Ogre::Entity* mBodyEntity;
     
-    PowerUp* base;
+    PowerUp base;
     bool death;
     
 public:
     PowerUpAgent(Player* player, GameApplication* game, Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
-    void spawn(int type, Ogre::Vector3 location);
+    void spawn(PowerUp power, Ogre::Vector3 location);
 	void despawn();
 	bool getVisibility();
-	PowerUp* getBase();
+	PowerUp getBase();
 	Ogre::AxisAlignedBox getBoundBox();
 	void update();
 };

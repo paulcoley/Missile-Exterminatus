@@ -5,7 +5,7 @@ namespace {
 	Player* player;
 	Grid* grid;
 	Missile* missile;
-	std::list<PowerUp*> powerUps;
+	std::vector<PowerUp> powerUps;
 
 	int setupPlayer(lua_State* L) {
 		int argc = lua_gettop(L);
@@ -18,11 +18,11 @@ namespace {
 
 	int setPowerUps(lua_State* L) {
 		int argc = lua_gettop(L);
-		if(argc == 0 || player == NULL) { return 0; }
-		PowerUp* power = new PowerUp();
-		power->speedModifier = lua_tonumber(L, 1);
-		power->fire_speed_modifier = lua_tonumber(L, 2);
-		power->deliver_the_fish = lua_toboolean(L, 3);
+		if(argc == 0) { return 0; }
+		PowerUp power;
+		power.speedModifier = lua_tonumber(L, 1);
+		power.fire_speed_modifier = lua_tonumber(L, 2);
+		power.deliver_the_fish = (bool) lua_toboolean(L, 3);
 		powerUps.push_back(power);
 		return 3;
 	}
@@ -43,6 +43,7 @@ GameApplication::GameApplication(void) {
 	l = luaL_newstate();
 	luaL_openlibs(l);
 	lua_register(l, "setupPlayer", setupPlayer);
+	lua_register(l, "setPowerUps", setPowerUps);
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -225,7 +226,9 @@ void GameApplication::loadEnv() {
 	path+= "scripts\\powerups.lua"; //if txt file is in the same directory as cpp file
 	luaL_dofile(l, path.c_str());
 
-	powerSphere = new PowerUpAgent(player, this, mSceneMgr, "PowerSphere", "sphere.mesh", 5.f, 1.f, Ogre::Vector3::ZERO);
+	powerSphere = new PowerUpAgent(player, this, mSceneMgr, "PowerSphere", "sphere.mesh", 5.f, 0.1f, Ogre::Vector3::ZERO);
+	srand(NULL);
+	powerSphere->spawn(powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
 }
 
 void GameApplication::setupEnv()
@@ -284,7 +287,7 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		missilesPerSpawn++;
 		srand(NULL);
 		if(powerSphere->getVisibility() == false) {
-			powerSphere->spawn( rand() % 2 + 1, grid->getPosition(rand() % numRows, rand() % numColumns));
+			powerSphere->spawn( powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
 		}
 	}
 	if(timePassed >= spawnThreshold) {
