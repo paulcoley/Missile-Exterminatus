@@ -102,7 +102,9 @@ void GameApplication::loadEnv() {
 	mSceneMgr->getRootSceneNode()->attachObject(floor);
 
 	grid = new Grid(mSceneMgr, z, x); // Set up the grid. z is rows, x is columns
-	
+	numColumns = x;
+	numRows = z;
+
 	string buf;
 	inputfile >> buf;	// Start looking for the Objects section
 	while  (buf != "Objects")
@@ -241,11 +243,16 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			projectile->update(deltaTime);
 		}
 	}
-
 	//update scaling values
 	if(timePassed >= increaseThreshold) {
 		increaseThreshold += 10;
 		missilesPerSpawn++;
+		/*
+		if(powerSphere->getVisibility == false)
+		{
+			powerSphere->spawn( rand() % 2 + 1, grid->getPosition(rand() % numRows, rand() % numColumns));
+		}
+		*/
 	}
 	if(timePassed >= spawnThreshold) {
 		spawnThreshold += 5;

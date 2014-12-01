@@ -16,5 +16,9 @@ private:
     
 public:
     PowerUpAgent(Player* player, GameApplication* game, Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
-    void update();
+    void spawn(int type, Ogre::Vector3 location);
+	void despawn();
+	bool getVisibility();
+	PowerUp* getBase();
+	void update();
 };

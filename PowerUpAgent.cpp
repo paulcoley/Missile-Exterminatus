@@ -18,8 +18,50 @@ using namespace Ogre;
 	mBodyNode->scale(scale,scale,scale); // Scale the figure
 	base = new PowerUp();
 	death = false;
+	mBodyNode->setVisible(false);
 }
 
+void PowerUpAgent::spawn(int type, Ogre::Vector3 location)
+{
+	mBodyNode->setPosition(location);
+	switch (type)
+	{
+		case 1:
+		{
+			//player speed increase
+			base->speedModifier = 2;
+			base->timeActive = 0;
+			base->deliver_the_fish = false;
+			base->fire_speed_modifier = 1;
+			base->death = false;
+			break;
+		}
+		case 2:
+		{
+			//missiles turn to fish
+			base->speedModifier = 1;
+			base->timeActive = 0;
+			base->deliver_the_fish = true;
+			base->fire_speed_modifier = 1;
+			base->death = false;
+			break;
+		}
+	}
+	mBodyNode->setVisible(true);
+}
+
+void PowerUpAgent::despawn()
+{
+	mBodyNode->setVisible(false);
+}
+bool PowerUpAgent::getVisibility()
+{
+	return mBodyEntity->isVisible();
+}
+PowerUp* PowerUpAgent::getBase()
+{
+	return base;
+}
 void PowerUpAgent::update() {
 	//bounding box check pending player instantiation
 	/*

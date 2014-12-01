@@ -20,6 +20,9 @@ class GameApplication : public BaseApplication {
 		int spawnThreshold;
 		int increaseThreshold;
 		int missilesPerSpawn;
+		//grid dimensions
+		int numRows;
+		int numColumns;
 
 		lua_State* l;
 	public:
