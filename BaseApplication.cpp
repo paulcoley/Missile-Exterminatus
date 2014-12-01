@@ -258,6 +258,8 @@ bool BaseApplication::setup(void)
     createScene();
 
     createFrameListener();
+	
+	createGUI();
 
     return true;
 };

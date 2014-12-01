@@ -62,6 +62,29 @@ void GameApplication::createScene(void) {
 	setupEnv();
 }
 
+void GameApplication::createGUI(void)
+{
+	//////////////////////////////////////////////////////////////////////////////////
+	// Lecture 16
+	if (mTrayMgr == NULL) return;
+	using namespace OgreBites;
+	//Button* b = mTrayMgr->createButton(TL_TOPLEFT, "MyButton", "Click Me!", 120.0);
+
+	// Lecture 16: Setup parameter panel: Updated in addTime
+	Ogre::StringVector items;
+	this->timePassed = 0.f;
+	this->score = 0;
+	items.push_back("Time passed");
+	items.push_back("Score");
+	mParamsPanel = mTrayMgr->createParamsPanel(OgreBites::TL_TOP,"SamplePanel",250,items);
+	
+	//mTrayMgr->create
+
+	mTrayMgr->showAll();
+
+	//////////////////////////////////////////////////////////////////////////////////
+}
+
 std::string getNewName() { // return a unique name 
 	static int count = 0;	// keep counting the number of objects
 
@@ -315,6 +338,9 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -values.second + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
 	}
 	mCamera->setPosition(camPos);
+
+	mParamsPanel->setParamValue(0, Ogre::StringConverter::toString(this->timePassed));
+	mParamsPanel->setParamValue(1, Ogre::StringConverter::toString(this->score));
 }
 
 bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
