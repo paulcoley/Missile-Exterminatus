@@ -5,6 +5,7 @@ namespace {
 	Player* player;
 	Grid* grid;
 	Missile* missile;
+	std::list<PowerUp*> powerUps;
 
 	int setupPlayer(lua_State* L) {
 		int argc = lua_gettop(L);
@@ -12,6 +13,17 @@ namespace {
 		player->setSpeed(lua_tonumber(L, 1));
 		player->setFireSpeed(lua_tonumber(L, 2));
 		player->setHeight(lua_tonumber(L, 3));
+		return 3;
+	}
+
+	int setPowerUps(lua_State* L) {
+		int argc = lua_gettop(L);
+		if(argc == 0 || player == NULL) { return 0; }
+		PowerUp* power = new PowerUp();
+		power->speedModifier = lua_tonumber(L, 1);
+		power->fire_speed_modifier = lua_tonumber(L, 2);
+		power->deliver_the_fish = lua_toboolean(L, 3);
+		powerUps.push_back(power);
 		return 3;
 	}
 }
@@ -207,6 +219,13 @@ void GameApplication::loadEnv() {
 	
 	inputfile.close();
 	grid->printToFile(); // see what the initial grid looks like.
+
+	path = __FILE__; //gets the current cpp file's path with the cpp file
+	path = path.substr(0,1+path.find_last_of('\\')); //removes filename to leave path
+	path+= "scripts\\powerups.lua"; //if txt file is in the same directory as cpp file
+	luaL_dofile(l, path.c_str());
+
+	powerSphere = new PowerUpAgent(player, this, mSceneMgr, "PowerSphere", "sphere.mesh", 5.f, 1.f, Ogre::Vector3::ZERO);
 }
 
 void GameApplication::setupEnv()
@@ -263,12 +282,10 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 	if(timePassed >= increaseThreshold) {
 		increaseThreshold += 10;
 		missilesPerSpawn++;
-		/*
-		if(powerSphere->getVisibility == false)
-		{
+		srand(NULL);
+		if(powerSphere->getVisibility() == false) {
 			powerSphere->spawn( rand() % 2 + 1, grid->getPosition(rand() % numRows, rand() % numColumns));
 		}
-		*/
 	}
 	if(timePassed >= spawnThreshold) {
 		spawnThreshold += 5;

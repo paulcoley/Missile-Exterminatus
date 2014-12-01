@@ -11,9 +11,12 @@
 
 class Missile;
 
+class PowerUpAgent;
+
 class GameApplication : public BaseApplication {
 	private:
 		std::list<Missile*> MissileList; //List of all active missiles
+		PowerUpAgent* powerSphere;
 
 		//MissileSpawner Scaling
 		Ogre::Real timePassed;
