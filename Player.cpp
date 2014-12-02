@@ -50,6 +50,14 @@ Ogre::Quaternion Player::getRotation() {
 }
     
 void Player::update(Ogre::Real deltaTime) {      // update the Player
+	if(this->shotActive)
+	{
+		this->shotTime += deltaTime;
+		if(this->shotTime > 1)
+		{
+			this->shotActive = false;
+		}
+	}
 	for(PowerUp power : this->currentPowerUps)
 	{
 		power.timeActive += deltaTime;
@@ -117,4 +125,13 @@ Ogre::SceneNode* Player::getSceneNode()
 Ogre::AxisAlignedBox Player::getBoundBox()
 {
 	return this->mBodyEntity->getWorldBoundingBox();
+}
+
+void Player::shoot()
+{
+	/*
+	this->shotActive = true;
+	this->shotTime = 0;
+	particleEmitter->setVisibility(true);
+	*/
 }

@@ -352,7 +352,20 @@ bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseA
     {
         mTrayMgr->toggleAdvancedFrameStats();
     }
-	else if(arg.key == OIS::KC_SPACE) { //Pushes the position of a grid node onto the actor's walk list by using random nodes.
+	else if(arg.key == OIS::KC_SPACE) { //Shoots using a ray to detect hits.
+		Ogre::Vector3 fire_end = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * 100.f;
+		Ogre::Ray ray(player->getPosition(), fire_end);
+		//player->shoot();
+		for(Missile*& projectile : MissileList) 
+		{
+			auto get = ray.intersects(projectile->getBoundBox());
+			if (get.first) 
+			{ 
+				/*
+				projectile->explode();
+				*/
+			}
+		}
 	}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
     {

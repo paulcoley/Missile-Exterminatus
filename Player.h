@@ -22,6 +22,8 @@ private:
     Ogre::Vector3 mDirection;               // The direction the object is moving
     Ogre::Real speed;                       // The speed at which the object is moving
     Ogre::Real baseSpeed;
+	bool shotActive;
+	Ogre::Real shotTime;
 public:
     Player(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
     ~Player();
@@ -39,6 +41,7 @@ public:
 	void moveBackward(Ogre::Real deltaTime);
 	void strafeLeft(Ogre::Real deltaTime);
 	void strafeRight(Ogre::Real deltaTime);
+	void shoot();
 	Ogre::SceneNode* getSceneNode();
 	Ogre::AxisAlignedBox getBoundBox();
 
