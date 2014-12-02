@@ -4,6 +4,7 @@
 #include "Missile.h"
 #include "Player.h"
 #include "PowerUpAgent.h"
+#include "MissileSpawner.h"
 #include <fstream>
 #include <sstream>
 #include <map>
@@ -11,8 +12,8 @@
 #include <vector>
 
 class Missile;
-
 class PowerUpAgent;
+class MissileSpawner;
 
 class GameApplication : public BaseApplication {
 	private:
