@@ -25,7 +25,7 @@ MissileSpawner::MissileSpawner(Ogre::SceneManager* SceneManager, std::string nam
 MissileSpawner::~MissileSpawner() {}
 
 void MissileSpawner::setPosition(Ogre::Vector3 new_position) {
-	mBodyNode->setPosition(spawn_position);
+	mBodyNode->setPosition(new_position);
 }
 
 Ogre::Vector3 MissileSpawner::getPosition() {
