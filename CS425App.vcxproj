@@ -93,6 +93,7 @@
     <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="MissileSpawner.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="PowerUpAgent.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MissileSpawner.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="PowerUpAgent.cpp" />
