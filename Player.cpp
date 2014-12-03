@@ -14,7 +14,7 @@ Player::Player(Ogre::SceneManager* SceneManager, std::string name, std::string f
 	this->scale = scale;
 
 	mBodyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(); // create a new scene node
-	mBodyEntity = mSceneMgr->createEntity(name, "sinbad.mesh"); // load the model
+	mBodyEntity = mSceneMgr->createEntity("player", "sinbad.mesh"); // load the model
 	mBodyNode->attachObject(mBodyEntity);	// attach the model to the scene node
 
 	mBodyNode->translate(spawn_position); // make the Ogre stand on the plane (almost)
@@ -102,6 +102,7 @@ void Player::setHeight(float val) {
 }
 
 void Player::setSpeed(float val) {
+	baseSpeed = val;
 	speed = val;
 }
 

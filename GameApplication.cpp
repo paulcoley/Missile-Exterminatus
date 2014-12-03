@@ -46,6 +46,7 @@ GameApplication::GameApplication(void) {
 	lua_register(l, "setupPlayer", setupPlayer);
 	lua_register(l, "setPowerUps", setPowerUps);
 	srand(NULL);
+	myManualObject = NULL;
 }
 //-------------------------------------------------------------------------------------
 GameApplication::~GameApplication(void) {
@@ -61,6 +62,21 @@ GameApplication::~GameApplication(void) {
 void GameApplication::createScene(void) {
     loadEnv();
 	setupEnv();
+	myManualObject =  mSceneMgr->createManualObject("manual1"); 
+	Ogre::SceneNode* myManualObjectNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("manual1_node");
+
+	Ogre::MaterialPtr myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create("manual1Material","General"); 
+	myManualObjectMaterial->setReceiveShadows(false); 
+	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(0,0,1,0); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0,0,1); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1); 
+	Ogre::Vector3 player_position = Ogre::Vector3(player->getPosition().x, player->getPosition().y + 3.f, player->getPosition().z);
+	myManualObject->begin("manual1Material", Ogre::RenderOperation::OT_LINE_LIST); 
+	myManualObject->position(player_position); 
+	myManualObject->position(player_position + player->getRotation() * Ogre::Vector3::UNIT_Z * 1000.f);
+	myManualObject->end(); 
+	myManualObjectNode->attachObject(myManualObject);
 }
 
 void GameApplication::createGUI(void)
@@ -292,20 +308,17 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 	}
 
 	timePassed += deltaTime;
+	Ogre::Vector3 player_position = Ogre::Vector3(player->getPosition().x, player->getPosition().y + 3.f, player->getPosition().z);
+	Ogre::Ray death_beam(player_position, player_position + player->getRotation() * Ogre::Vector3::UNIT_Z * 1000.f);
+	myManualObject->beginUpdate(0);
+	myManualObject->position(player_position); 
+	myManualObject->position(player_position + player->getRotation() * Ogre::Vector3::UNIT_Z * 1000.f);
+	myManualObject->end(); 
 	for(Missile*& projectile : MissileList) {
 		if (projectile != NULL) {
 			projectile->setTracking(player->getSceneNode());
 			projectile->update(deltaTime);
 		}
-	}
-
-	//bounding box checks
-	if(player->getBoundBox().intersects(powerSphere->getBoundBox()) && powerSphere->getVisibility() == true) {
-		player->AddPowerUp(powerSphere->getBase());
-		powerSphere->despawn();
-	}
-	Ogre::Ray death_beam(player->getPosition(), player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * 100.f);
-	for(Missile*& projectile : MissileList) {
 		if(projectile != NULL && projectile->getBoundBox().intersects(player->getBoundBox()))
 		{
 			player->setTimesHit(player->getTimesHit() + 1);
@@ -324,6 +337,12 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 				projectile = NULL;
 			}
 		}
+	}
+
+	//bounding box checks
+	if(player->getBoundBox().intersects(powerSphere->getBoundBox()) && powerSphere->getVisibility() == true) {
+		player->AddPowerUp(powerSphere->getBase());
+		powerSphere->despawn();
 	}
 
 	//update scaling values

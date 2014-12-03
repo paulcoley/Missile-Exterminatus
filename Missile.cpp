@@ -56,7 +56,7 @@ void Missile::update(Ogre::Real deltaTime)  {
 		Ogre::Vector3 seperation = Ogre::Vector3::ZERO;
 
 		for(Missile*& actor : missileList) {
-			if (actor == this) { continue; }				//Skip agent in list if itself
+			if (actor == this || actor == NULL) { continue; }				//Skip agent in list if itself
 			Ogre::Vector3 distance_base = mBodyNode[0]->getPosition() - actor->getPosition();	//Get distance vector to each other agent
 			Ogre::Real distance_normal = distance_base.length();										//Get length of each distance
 

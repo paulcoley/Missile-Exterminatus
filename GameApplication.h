@@ -10,7 +10,7 @@
 #include <map>
 #include <lua.hpp>
 #include <vector>
-#define MAXIMUM_FISH 75
+#define MAXIMUM_FISH 50
 
 class Missile;
 class PowerUpAgent;
@@ -33,6 +33,7 @@ class GameApplication : public BaseApplication {
 		int numColumns;
 
 		OgreBites::Button* b;
+		Ogre::ManualObject* myManualObject;
 
 		lua_State* l;
 	public:
