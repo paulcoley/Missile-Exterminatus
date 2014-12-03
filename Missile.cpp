@@ -69,7 +69,7 @@ void Missile::update(Ogre::Real deltaTime)  {
 				cohesion += actor->getPosition(); //If within 15u, attempt to steer toward center of mass in neighborhood
 			}
 
-			if(distance_normal < (10.f)) { // If within 10u, attempt to most away from other agents.
+			if(distance_normal < (10.f) && (distance_normal * distance_normal) > 0.f) { // If within 10u, attempt to most away from other agents.
 				seperation += distance_base / (distance_normal * distance_normal);
 			}
 		}
