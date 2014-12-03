@@ -298,10 +298,12 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		powerSphere->despawn();
 	}
 	for(Missile*& projectile : MissileList) {
-		if(projectile->getBoundBox().intersects(player->getBoundBox()))
+		if(projectile != NULL && projectile->getBoundBox().intersects(player->getBoundBox()))
 		{
 			player->setTimesHit(player->getTimesHit() + 1);
-			//projectile->explode();
+			projectile->explode();
+			delete projectile;
+			projectile = NULL;
 		}
 	}
 
@@ -353,6 +355,8 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 
 	mParamsPanel->setParamValue(0, Ogre::StringConverter::toString(this->timePassed));
 	mParamsPanel->setParamValue(1, Ogre::StringConverter::toString(this->score));
+
+	MissileList.remove(NULL);
 }
 
 bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication

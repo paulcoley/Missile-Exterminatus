@@ -229,5 +229,9 @@ Ogre::AxisAlignedBox Missile::getBoundBox()
 		return this->mBodyEntity[1]->getBoundingBox();
 	}
 	*/
-	return this->mBodyEntity[0]->getBoundingBox();
+	return this->mBodyEntity[0]->getWorldBoundingBox();
+}
+
+void Missile::explode() {
+	mBodyNode[0]->setVisible(false);
 }
