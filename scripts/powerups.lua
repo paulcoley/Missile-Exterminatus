@@ -1,4 +1,4 @@
-setPowerUps(10, 0, false)
-setPowerUps(0, 10, false)
-setPowerUps(0, 0, true)
+setPowerUps(10, 1, false)
+setPowerUps(1, 10, false)
+setPowerUps(1, 1, true)
 print("Blargity Blargh honk")

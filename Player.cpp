@@ -73,11 +73,18 @@ void Player::update(Ogre::Real deltaTime) {      // update the Player
 	for(PowerUp power : this->currentPowerUps)
 	{
 		power.timeActive += deltaTime;
+		speed = baseSpeed * power.speedModifier;
+		fire_speed = baseSpeed * power.fire_speed_modifier;
 		if(power.timeActive >= 10)
 		{
 			/*
 			check which type it is via checking its fields and undo modifications corresponding to type then pop from list
 			*/
+			if(power.speedModifier > 1)
+				speed = baseSpeed;
+			else if(power.fire_speed_modifier > 1)
+				fire_speed = baseSpeed;
+			currentPowerUps.pop_front();
 		}
 	}
 }
