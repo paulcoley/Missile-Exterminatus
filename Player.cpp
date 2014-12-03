@@ -27,6 +27,8 @@ Player::Player(Ogre::SceneManager* SceneManager, std::string name, std::string f
 	speed = 35.0f;
 	baseSpeed = speed;
 	mDirection = Ogre::Vector3::ZERO;
+	shotActive = false;
+	shotTime = 0.f;
 }
 
 Player::~Player() {
@@ -53,9 +55,10 @@ void Player::update(Ogre::Real deltaTime) {      // update the Player
 	if(this->shotActive)
 	{
 		this->shotTime += deltaTime;
-		if(this->shotTime > 1)
+		if(this->shotTime > 1.f)
 		{
 			this->shotActive = false;
+			shotTime = 0.f;
 		}
 	}
 	for(PowerUp power : this->currentPowerUps)
@@ -129,9 +132,10 @@ Ogre::AxisAlignedBox Player::getBoundBox()
 
 void Player::shoot()
 {
-	/*
 	this->shotActive = true;
-	this->shotTime = 0;
-	particleEmitter->setVisibility(true);
-	*/
+	//particleEmitter->setVisibility(true);
+}
+
+bool Player::getShotActive() {
+	return shotActive;
 }

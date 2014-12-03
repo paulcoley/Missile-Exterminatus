@@ -283,6 +283,7 @@ void GameApplication::setupEnv()
 
 void GameApplication::addTime(Ogre::Real deltaTime)
 {
+	player->update(deltaTime);
 	if(player->dead == true) {
 		if(b == NULL) { b = mTrayMgr->createButton(OgreBites::TL_CENTER, "GameOver", "Game Over man; Game Over!"); }
 		b->show();
@@ -303,6 +304,7 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		player->AddPowerUp(powerSphere->getBase());
 		powerSphere->despawn();
 	}
+	Ogre::Ray death_beam(player->getPosition(), player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * 100.f);
 	for(Missile*& projectile : MissileList) {
 		if(projectile != NULL && projectile->getBoundBox().intersects(player->getBoundBox()))
 		{
@@ -310,6 +312,16 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			projectile->explode();
 			delete projectile;
 			projectile = NULL;
+		}
+		if(projectile != NULL && player->getShotActive())
+		{
+			auto detect = death_beam.intersects(projectile->getBoundBox());
+			if(detect.first) {
+				std::cout << "Here!" << std::endl;
+				projectile->explode();
+				delete projectile;
+				projectile = NULL;
+			}
 		}
 	}
 
@@ -378,18 +390,8 @@ bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseA
         mTrayMgr->toggleAdvancedFrameStats();
     }
 	else if(arg.key == OIS::KC_SPACE) { //Shoots using a ray to detect hits.
-		Ogre::Vector3 fire_end = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * 100.f;
-		Ogre::Ray ray(player->getPosition(), fire_end);
-		//player->shoot();
-		for(Missile*& projectile : MissileList) 
-		{
-			auto get = ray.intersects(projectile->getBoundBox());
-			if (get.first) 
-			{ 
-				/*
-				projectile->explode();
-				*/
-			}
+		if(!player->getShotActive()) {
+			player->shoot();
 		}
 	}
     else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details

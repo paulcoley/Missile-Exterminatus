@@ -48,5 +48,6 @@ public:
 
 	void update(Ogre::Real deltaTime);      // update the Player
     void AddPowerUp(PowerUp);
+	bool getShotActive();
 };
 
