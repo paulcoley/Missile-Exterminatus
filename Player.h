@@ -10,7 +10,7 @@ private:
     Ogre::SceneNode* mBodyNode;         
     Ogre::Entity* mBodyEntity;
     int timesHit;
-    bool dead;
+    
     std::list<PowerUp> currentPowerUps;
     Ogre::Real fire_speed;
     
@@ -28,6 +28,7 @@ public:
     Player(Ogre::SceneManager* SceneManager, std::string name, std::string filename, float height, float scale, Ogre::Vector3 spawn_position);
     ~Player();
     
+	bool dead;
     void setPosition(Ogre::Vector3 new_position);
     Ogre::Vector3 getPosition();
 	void setRotation(Ogre::Quaternion rotation);

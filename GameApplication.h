@@ -57,5 +57,6 @@ class GameApplication : public BaseApplication {
 	protected:
 		virtual void createScene(void);
 		virtual void createGUI(void); // Lecture 16
+		virtual void buttonHit(OgreBites::Button* b); // Lecture 16
 		OgreBites::ParamsPanel* mParamsPanel; // Lecture 16
 };

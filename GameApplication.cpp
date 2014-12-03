@@ -68,7 +68,7 @@ void GameApplication::createGUI(void)
 	// Lecture 16
 	if (mTrayMgr == NULL) return;
 	using namespace OgreBites;
-	//Button* b = mTrayMgr->createButton(TL_TOPLEFT, "MyButton", "Click Me!", 120.0);
+	Button* b = mTrayMgr->createButton(TL_CENTER, "GameOver", "Game Over man; Game Over!", 120.0);
 
 	// Lecture 16: Setup parameter panel: Updated in addTime
 	Ogre::StringVector items;
@@ -81,6 +81,7 @@ void GameApplication::createGUI(void)
 	//mTrayMgr->create
 
 	mTrayMgr->showAll();
+	b->hide();
 	mTrayMgr->hideCursor();
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -284,79 +285,91 @@ void GameApplication::setupEnv()
 
 void GameApplication::addTime(Ogre::Real deltaTime)
 {
-	timePassed += deltaTime;
-	for(Missile*& projectile : MissileList) {
-		if (projectile != NULL) {
-			projectile->setTracking(player->getSceneNode());
-			projectile->update(deltaTime);
+	if(player->dead == false)
+	{
+		timePassed += deltaTime;
+		for(Missile*& projectile : MissileList) {
+			if (projectile != NULL) {
+				projectile->setTracking(player->getSceneNode());
+				projectile->update(deltaTime);
+			}
 		}
-	}
 
-	//bounding box checks
-	if(player->getBoundBox().intersects(powerSphere->getBoundBox()) && powerSphere->getVisibility() == true) {
-		player->AddPowerUp(powerSphere->getBase());
-		powerSphere->despawn();
-	}
-	for(Missile*& projectile : MissileList) {
-		if(projectile != NULL && projectile->getBoundBox().intersects(player->getBoundBox()))
-		{
-			player->setTimesHit(player->getTimesHit() + 1);
-			projectile->explode();
-			delete projectile;
-			projectile = NULL;
+		//bounding box checks
+		if(player->getBoundBox().intersects(powerSphere->getBoundBox()) && powerSphere->getVisibility() == true) {
+			player->AddPowerUp(powerSphere->getBase());
+			powerSphere->despawn();
 		}
-	}
+		for(Missile*& projectile : MissileList) {
+			if(projectile != NULL && projectile->getBoundBox().intersects(player->getBoundBox()))
+			{
+				player->setTimesHit(player->getTimesHit() + 1);
+				projectile->explode();
+				delete projectile;
+				projectile = NULL;
+			}
+		}
 
-	//update scaling values
-	if(timePassed >= increaseThreshold) {
-		increaseThreshold += 10;
-		missilesPerSpawn++;
-		if(powerSphere->getVisibility() == false) {
-			powerSphere->spawn( powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
+		//update scaling values
+		if(timePassed >= increaseThreshold) {
+			increaseThreshold += 10;
+			missilesPerSpawn++;
+			if(powerSphere->getVisibility() == false) {
+				powerSphere->spawn( powerUps[rand() % powerUps.size()], grid->getPosition(rand() % numRows, rand() % numColumns));
+			}
 		}
-	}
-	if(timePassed >= spawnThreshold) {
-		spawnThreshold += 5;
-		for(MissileSpawner*& spawner : SpawnerList) {
-			Ogre::Vector3 position = spawner->getPosition();
-			position.x  = position.x + static_cast<float>(rand() % 30) - 15.f;
-			position.z  = position.z + static_cast<float>(rand() % 30) - 15.f;
-			position.y = 5.f;
-			if (spawner != NULL) {
-				for(int i = 0; i < missilesPerSpawn; i++) {
-					if(MissileList.size() < MAXIMUM_FISH) { MissileList.push_back(new Missile(this->mSceneMgr, getNewName(), "missile.mesh", 1.f, 1.f, position, this)); }
+		if(timePassed >= spawnThreshold) {
+			spawnThreshold += 5;
+			for(MissileSpawner*& spawner : SpawnerList) {
+				Ogre::Vector3 position = spawner->getPosition();
+				position.x  = position.x + static_cast<float>(rand() % 30) - 15.f;
+				position.z  = position.z + static_cast<float>(rand() % 30) - 15.f;
+				position.y = 5.f;
+				if (spawner != NULL) {
+					for(int i = 0; i < missilesPerSpawn; i++) {
+						if(MissileList.size() < MAXIMUM_FISH) { MissileList.push_back(new Missile(this->mSceneMgr, getNewName(), "missile.mesh", 1.f, 1.f, position, this)); }
+					}
 				}
 			}
 		}
-	}
 
-	if (mKeyboard->isKeyDown(OIS::KC_W)) {
-		player->moveForward(deltaTime);
-	}
-	if (mKeyboard->isKeyDown(OIS::KC_A)) {
-		player->strafeLeft(deltaTime);
-	}
-	if (mKeyboard->isKeyDown(OIS::KC_S)) {
-		player->moveBackward(deltaTime);
-	}
-	if (mKeyboard->isKeyDown(OIS::KC_D)) {
-		player->strafeRight(deltaTime);
-	}
+		if (mKeyboard->isKeyDown(OIS::KC_W)) {
+			player->moveForward(deltaTime);
+		}
+		if (mKeyboard->isKeyDown(OIS::KC_A)) {
+			player->strafeLeft(deltaTime);
+		}
+		if (mKeyboard->isKeyDown(OIS::KC_S)) {
+			player->moveBackward(deltaTime);
+		}
+		if (mKeyboard->isKeyDown(OIS::KC_D)) {
+			player->strafeRight(deltaTime);
+		}
 
-	player->setRotation(mCamera->getOrientation());
-	Ogre::Vector3 camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -15.f + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
-	Ogre::Ray ray(player->getPosition(), camPos);
-	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0.f);
-	auto values = ray.intersects(plane);
-	if(values.first == true) {
-		camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -values.second + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
+		player->setRotation(mCamera->getOrientation());
+		Ogre::Vector3 camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -15.f + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
+		Ogre::Ray ray(player->getPosition(), camPos);
+		Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0.f);
+		auto values = ray.intersects(plane);
+		if(values.first == true) {
+			camPos = player->getPosition() + player->getRotation() * Ogre::Vector3::UNIT_Z * -values.second + player->getRotation() * Ogre::Vector3::UNIT_Y * 5.f;
+		}
+		mCamera->setPosition(camPos);
+
+		mParamsPanel->setParamValue(0, Ogre::StringConverter::toString(this->timePassed));
+		mParamsPanel->setParamValue(1, Ogre::StringConverter::toString(this->score));
+
+		MissileList.remove(NULL);
+		if(player->getTimesHit() >= 10)
+		{
+			player->dead = true;
+		}
 	}
-	mCamera->setPosition(camPos);
-
-	mParamsPanel->setParamValue(0, Ogre::StringConverter::toString(this->timePassed));
-	mParamsPanel->setParamValue(1, Ogre::StringConverter::toString(this->score));
-
-	MissileList.remove(NULL);
+	else
+	{
+		//display game over button
+		mTrayMgr->showAll();
+	}
 }
 
 bool GameApplication::keyPressed( const OIS::KeyEvent &arg ) // Moved from BaseApplication
@@ -495,6 +508,18 @@ bool GameApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButto
     return true;
 }
 
+////////////////////////////////////////////////////////////////////
+// Lecture 16
+// Callback method for buttons
+void GameApplication::buttonHit(OgreBites::Button* b)
+{
+	if (b->getName() == "GameOver")
+	{
+		exit(0);
+	}
+}
+
 std::list<Missile*> GameApplication::getMissiles() {
 	return MissileList;
 }
+
