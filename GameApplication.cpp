@@ -314,7 +314,6 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		}
 	}
 	if(timePassed >= spawnThreshold) {
-		srand(NULL);
 		spawnThreshold += 5;
 		for(MissileSpawner*& spawner : SpawnerList) {
 			Ogre::Vector3 position = spawner->getPosition();
@@ -323,7 +322,7 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			position.y = 5.f;
 			if (spawner != NULL) {
 				for(int i = 0; i < missilesPerSpawn; i++) {
-					MissileList.push_back(new Missile(this->mSceneMgr, getNewName(), "missile.mesh", 1.f, 1.f, position, this));
+					if(MissileList.size() < MAXIMUM_FISH) { MissileList.push_back(new Missile(this->mSceneMgr, getNewName(), "missile.mesh", 1.f, 1.f, position, this)); }
 				}
 			}
 		}

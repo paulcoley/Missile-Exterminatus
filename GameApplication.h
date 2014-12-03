@@ -10,6 +10,7 @@
 #include <map>
 #include <lua.hpp>
 #include <vector>
+#define MAXIMUM_FISH 75
 
 class Missile;
 class PowerUpAgent;
