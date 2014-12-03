@@ -10,7 +10,7 @@ private:
     Ogre::SceneNode* mBodyNode;         
     Ogre::Entity* mBodyEntity;
     int timesHit;
-    
+	Ogre::ParticleSystem* ps;
     std::list<PowerUp> currentPowerUps;
     Ogre::Real fire_speed;
     

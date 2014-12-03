@@ -29,6 +29,14 @@ Player::Player(Ogre::SceneManager* SceneManager, std::string name, std::string f
 	mDirection = Ogre::Vector3::ZERO;
 	shotActive = false;
 	shotTime = 0.f;
+
+	ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+	ps = mSceneMgr->createParticleSystem("Fountain1", "Examples/PurpleFountain");
+	Ogre::SceneNode* mnode = mBodyNode->createChildSceneNode();
+	mnode->roll(Degree(90));
+	mnode->pitch(Degree(90));
+	mnode->attachObject(ps);
+	ps->setVisible(false);
 }
 
 Player::~Player() {
@@ -58,6 +66,7 @@ void Player::update(Ogre::Real deltaTime) {      // update the Player
 		if(this->shotTime > 1.f)
 		{
 			this->shotActive = false;
+			this->ps->setVisible(false);
 			shotTime = 0.f;
 		}
 	}
@@ -133,7 +142,7 @@ Ogre::AxisAlignedBox Player::getBoundBox()
 void Player::shoot()
 {
 	this->shotActive = true;
-	//particleEmitter->setVisibility(true);
+	ps->setVisible(true);
 }
 
 bool Player::getShotActive() {

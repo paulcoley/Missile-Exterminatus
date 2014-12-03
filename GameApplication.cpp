@@ -318,6 +318,7 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 			auto detect = death_beam.intersects(projectile->getBoundBox());
 			if(detect.first) {
 				std::cout << "Here!" << std::endl;
+				score++;
 				projectile->explode();
 				delete projectile;
 				projectile = NULL;
