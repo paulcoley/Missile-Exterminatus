@@ -32,6 +32,8 @@ class GameApplication : public BaseApplication {
 		int numRows;
 		int numColumns;
 
+		OgreBites::Button* b;
+
 		lua_State* l;
 	public:
 		GameApplication(void);
