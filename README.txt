@@ -1,5 +1,6 @@
 Project name: Missile Exterminatus
 Collaborators: Paul Coley, Erik Puesey
+Additional Setup: Requires the LUA header files and library on the proper file path (LUA_HOME) to compile, as well as lua52.dll in the same folder as the executable to function. These can be found at http://sourceforge.net/projects/luabinaries/files/5.2.3/Windows%20Libraries/Dynamic/ with the download compiled with VS12.
 
 Goal: Defeat as many of the fishy missiles as possible before they overwhelm you
 
