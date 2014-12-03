@@ -10,11 +10,10 @@ c column.mesh 11.0 0.0 0.1
 f Barrel.mesh 1.0 0.0 1
 
 Characters
-s fish.mesh 1 1
 
 
 World
-oooooooooooooooooooooooooooooccccccccccccccccccccc
+soooooooooooooooooooooooooooooooooooooooooooooooos
 oooooooooooooooooooooooooooooooooooooooooooooooooo
 oooooooooooooooooooooooooooooooooooooooooooooooooo
 oooooooooooooooooooooooooooooooooooooooooooooooooo
@@ -53,4 +52,4 @@ oooooooooooooooooooooooooooooooooooooooooooooooooo
 oooooooooooooooooooooooooooooooooooooooooooooooooo
 oooooooooooooooooooooooooooooooooooooooooooooooooo
 oooooooooooooooooooooooooooooooooooooooooooooooooo
-oooooooooooooooooooooooooooooooooooooooooooooooooo
+soooooooooooooooooooooooooooooooooooooooooooooooos

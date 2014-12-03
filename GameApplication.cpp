@@ -230,6 +230,9 @@ void GameApplication::loadEnv() {
 					path+= "scripts\\player.lua"; //if txt file is in the same directory as cpp file
 					luaL_dofile(l, path.c_str());
 				}
+				else if (c == 's') {
+					SpawnerList.push_back(new MissileSpawner(this->mSceneMgr, getNewName(), 0.f, .5f, Ogre::Vector3(grid->getPosition(i,j).x, 1, grid->getPosition(i,j).z), this));
+				}
 			}
 		}
 	
@@ -311,9 +314,18 @@ void GameApplication::addTime(Ogre::Real deltaTime)
 		}
 	}
 	if(timePassed >= spawnThreshold) {
+		srand(NULL);
 		spawnThreshold += 5;
-		for(int i = 0; i < missilesPerSpawn; i++) {
-			//spawn missiles
+		for(MissileSpawner*& spawner : SpawnerList) {
+			Ogre::Vector3 position = spawner->getPosition();
+			position.x  = position.x + static_cast<float>(rand() % 30) - 15.f;
+			position.z  = position.z + static_cast<float>(rand() % 30) - 15.f;
+			position.y = 5.f;
+			if (spawner != NULL) {
+				for(int i = 0; i < missilesPerSpawn; i++) {
+					MissileList.push_back(new Missile(this->mSceneMgr, getNewName(), "missile.mesh", 1.f, 1.f, position, this));
+				}
+			}
 		}
 	}
 

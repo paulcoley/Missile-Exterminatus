@@ -17,6 +17,7 @@ class MissileSpawner;
 
 class GameApplication : public BaseApplication {
 	private:
+		std::list<MissileSpawner*> SpawnerList;
 		std::list<Missile*> MissileList; //List of all active missiles
 		PowerUpAgent* powerSphere;
 

@@ -14,7 +14,7 @@ MissileSpawner::MissileSpawner(Ogre::SceneManager* SceneManager, std::string nam
 	this->scale = scale;
 
 	mBodyNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	mBodyEntity = mSceneMgr->createEntity(name, "fish.mesh");
+	mBodyEntity = mSceneMgr->createEntity(name, "column.mesh");
 	mBodyNode->attachObject(mBodyEntity);
 
 	mBodyNode->translate(spawn_position);
